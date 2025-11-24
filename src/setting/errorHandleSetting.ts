@@ -1,0 +1,193 @@
+/**
+ * Used to configure the global error handling function, which can monitor vue errors, script errors, static resource errors and Promise errors
+ */
+import type { App } from 'vue';
+import type { ErrorLogInfo } from '#/store';
+import { useErrorLogStoreWithOut } from '@/store/modules/errorLog';
+import { ErrorTypeEnum } from '@/enums';
+import projectSetting from '@/setting/projectSetting';
+
+/**
+ * Handling error stack information
+ * @param error
+ */
+function processStackMsg(error: Error) {
+  if (!error.stack) {
+    return '';
+  }
+  let stack = error.stack
+    .replace(/\n/g, '') // Remove line breaks to save the size of the transmitted content
+    .replace(/\bat\b/gi, '@') // At in chrome, @ in ff
+    .split('@') // Split information with @
+    .slice(0, 9) // The maximum stack length (Error.stackTraceLimit = 10), so only take the first 10
+    .map((v) => v.replace(/^\s*|\s*$/g, '')) // Remove extra spaces
+    .join('~') // Manually add separators for later display
+    .replace(/\?[^:]+/g, ''); // Remove redundant parameters of js file links (?x=1 and the like)
+  const msg = error.toString();
+  if (stack.indexOf(msg) < 0) {
+    stack = msg + '@' + stack;
+  }
+  return stack;
+}
+
+/**
+ * get comp name
+ * @param vm
+ */
+function formatComponentName(vm: any) {
+  if (vm.$root === vm) {
+    return {
+      name: 'root',
+      path: 'root',
+    };
+  }
+
+  const options = vm.$options as any;
+  if (!options) {
+    return {
+      name: 'anonymous',
+      path: 'anonymous',
+    };
+  }
+  const name = options.name || options._componentTag;
+  return {
+    name,
+    path: options.__file,
+  };
+}
+
+/**
+ * Configure Vue error handling function
+ */
+
+function vueErrorHandler(err: Error, vm: any, info: string) {
+  const errorLogStore = useErrorLogStoreWithOut();
+  const { name, path } = formatComponentName(vm);
+  errorLogStore.addErrorLogInfo({
+    type: ErrorTypeEnum.VUE,
+    name,
+    file: path,
+    message: err.message,
+    stack: processStackMsg(err),
+    detail: info,
+    url: window.location.href,
+  });
+}
+
+/**
+ * Configure script error handling function
+ */
+export function scriptErrorHandler(
+  event: Event | string,
+  source?: string,
+  lineno?: number,
+  colno?: number,
+  error?: Error,
+) {
+  if (event === 'Script error.' && !source) {
+    return false;
+  }
+  const errorInfo: Partial<ErrorLogInfo> = {};
+  colno = colno || (window.event && (window.event as any).errorCharacter) || 0;
+  errorInfo.message = event as string;
+  if (error?.stack) {
+    errorInfo.stack = error.stack;
+  } else {
+    errorInfo.stack = '';
+  }
+  const name = source ? source.substr(source.lastIndexOf('/') + 1) : 'script';
+  const errorLogStore = useErrorLogStoreWithOut();
+  errorLogStore.addErrorLogInfo({
+    type: ErrorTypeEnum.SCRIPT,
+    name,
+    file: source as string,
+    detail: 'lineno' + lineno,
+    url: window.location.href,
+    ...(errorInfo as Pick<ErrorLogInfo, 'message' | 'stack'>),
+  });
+  return true;
+}
+
+let hasReloaded = false;
+/**
+ * Configure Promise error handling function
+ */
+function registerPromiseErrorHandler() {
+  window.addEventListener(
+    'unhandledrejection',
+    (event) => {
+      const errorLogStore = useErrorLogStoreWithOut();
+      errorLogStore.addErrorLogInfo({
+        type: ErrorTypeEnum.PROMISE,
+        name: 'Promise Error!',
+        file: 'Promise',
+        detail: 'Unhandled promise rejection',
+        url: window.location.href,
+        stack: 'promise error!',
+        message: event.reason,
+      });
+      console.log(event.reason, 'event.reason');
+      if (
+        !hasReloaded &&
+        event.reason instanceof TypeError &&
+        event.reason.message.includes('Failed to fetch dynamically imported module')
+      ) {
+        // 当捕获到特定错误时刷新页面
+        console.error('捕获到动态导入模块失败的错误，正在刷新页面:', event.reason);
+        hasReloaded = true; // 设置标志变量，防止多次刷新
+        // window.location.reload(); // 强制刷新页面
+      }
+    },
+    true,
+  );
+}
+
+/**
+ * Configure monitoring resource loading error handling function
+ */
+function registerResourceErrorHandler() {
+  // Monitoring resource loading error(img,script,css,and jsonp)
+  window.addEventListener(
+    'error',
+    (e: Event) => {
+      const target = e.target ? e.target : (e.srcElement as any);
+      const errorLogStore = useErrorLogStoreWithOut();
+      errorLogStore.addErrorLogInfo({
+        type: ErrorTypeEnum.RESOURCE,
+        name: 'Resource Error!',
+        file: (e.target || ({} as any)).currentSrc,
+        detail: JSON.stringify({
+          tagName: target.localName,
+          html: target.outerHTML,
+          type: e.type,
+        }),
+        url: window.location.href,
+        stack: 'resource is not found',
+        message: (e.target || ({} as any)).localName + ' is load error',
+      });
+    },
+    true,
+  );
+}
+
+/**
+ * Configure global error handling
+ * @param app
+ */
+export function setupErrorHandle(app: App) {
+  const { useErrorHandle } = projectSetting;
+  if (!useErrorHandle) {
+    return;
+  }
+  // Vue exception monitoring;
+  app.config.errorHandler = vueErrorHandler;
+
+  // script error
+  window.onerror = scriptErrorHandler;
+
+  //  promise exception
+  registerPromiseErrorHandler();
+
+  // Static resource exception
+  registerResourceErrorHandler();
+}

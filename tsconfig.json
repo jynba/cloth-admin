@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "strictFunctionTypes": false,
+    "jsx": "preserve",
+    "allowJs": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "experimentalDecorators": true,
+    "lib": ["esnext", "dom"],
+    //用于指定需要包含的模块，只有在这里列出的模块的声明文件才会被加载
+    "types": ["vite/client","unplugin-icons/types/vue"],
+    "typeRoots": ["node_modules/@types/", "types"],
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    // add path
+    "paths": {
+      "@/*": ["src/*"],
+      "#/*": ["types/*"],
+      "@utils/*": ["src/utils/*"]
+    }
+  },
+  // 指定哪些ts文件需要被编译
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "types/**/*.d.ts",
+    "types/**/*.ts",
+    "build/**/*.ts",
+    "build/**/*.d.ts",
+    "vite.config.ts",
+  ],
+  "exclude": ["node_modules", "dist", "**/*.js"]
+}

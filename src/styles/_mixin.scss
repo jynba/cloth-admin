@@ -1,0 +1,55 @@
+@mixin setTopLine($clolor: #eeeeee) {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  background: $clolor;
+  transform-origin: 0 0;
+
+  /* 1.5倍屏 */
+  @media (-webkit-min-device-pixel-ratio: 1.5) {
+    transform: scaleY(0.6666);
+  }
+
+  /* 2倍屏 */
+  @media (-webkit-min-device-pixel-ratio: 2) {
+    transform: scaleY(0.5);
+  }
+
+  /* 3倍屏 */
+  @media (-webkit-min-device-pixel-ratio: 3) {
+    transform: scaleY(0.3333);
+  }
+}
+
+@mixin setAllLine($clolor: #eeeeee, $radius: 0) {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  border: 1px solid $clolor;
+
+  @media (-webkit-min-device-pixel-ratio: 1.5) {
+    width: 150%;
+    height: 150%;
+    transform: scale(0.66666);
+    border-radius: $radius * 1.5;
+  }
+
+  @media (-webkit-min-device-pixel-ratio: 2) {
+    width: 200%;
+    height: 200%;
+    transform: scale(0.5);
+    border-radius: $radius * 2;
+  }
+
+  @media (-webkit-min-device-pixel-ratio: 3) {
+    width: 300%;
+    height: 300%;
+    transform: scale(0.33333);
+    border-radius: $radius * 3;
+  }
+}

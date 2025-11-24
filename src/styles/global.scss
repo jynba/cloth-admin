@@ -1,0 +1,105 @@
+//全局样式
+html,
+body {
+  height: 100%;
+  font-size: 16px;
+  overflow: hidden;
+  //font-family: microsoft yahei,Times New Roman,宋体,Times,"serif";;
+}
+
+#app {
+  height: 100%;
+}
+.el-container {
+  width: 100%;
+  height: 100%;
+
+  .el-aside {
+    width: auto;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+  }
+}
+.layout-aside {
+  display: flex;
+  flex-direction: column;
+}
+
+// 搜索框样式
+.searchbar {
+  padding: 20px;
+  background: #fff;
+  margin-bottom: 10px;
+  .el-form {
+    .el-form-item {
+      margin-bottom: 0px;
+    }
+  }
+}
+
+// 侧边菜单样式
+.el-menu-container:not(.el-menu--collapse) {
+  width: 200px;
+  height: 100%;
+}
+
+.el-menu-item,
+.el-sub-menu__title,
+.el-icon-arrow-down {
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: #e7effe;
+    color: var(--el-color-primary) !important;
+  }
+}
+// 选中背景色
+.el-menu .el-menu-item.is-active {
+  background-color: #e7effe;
+}
+// 全局表格样式
+.table-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+// 搜索框样式
+.searchbar {
+  padding: 20px;
+  background: $bg-panel;
+  margin-bottom: 10px;
+  .el-form {
+    .el-form-item {
+      margin-bottom: 0px;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 9px; /*滚动条宽度*/
+  height: 8px; /*滚动条高度*/
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  //-webkit-box-shadow: inset 0 0 6px rgba(128, 126, 126, 0.3);
+  border-radius: 10px; /*滚动条的背景区域的圆角*/
+  background-color: transparent; /*滚动条的背景颜色*/
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px; /*滚动条的圆角*/
+  -webkit-box-shadow: inset 0 0 6px rgba(235, 230, 230, 0.3);
+  background-color: #ccc; /*滚动条的背景颜色*/
+}
+
+// 全局加粗标签样式
+.bold-label {
+  .el-form-item__label {
+    font-size: 16px !important;
+    font-weight: bold !important;
+  }
+}

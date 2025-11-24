@@ -1,0 +1,132 @@
+.largeScreen-container {
+  width: 100%;
+  height: 100%;
+  background: url('../images/bg.png') no-repeat;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  //background-position: center;
+  background-size: 100% 100%;
+  background-size: cover;
+
+  .largeScreen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s;
+    transform-origin: left top;
+
+    .largeScreen-header {
+      display: flex;
+      width: 100%;
+      height: 38px;
+      .header-lf,
+      .header-rg {
+        position: relative;
+        width: 567px;
+        height: 100%;
+        background: url('../images/header-lerg-bg.png') no-repeat;
+        background-size: 100% 100%;
+      }
+      .header-ct {
+        position: relative;
+        flex: 1;
+        height: 100%;
+
+        .header-ct-text {
+          position: absolute;
+          width: 100%;
+          height: 82px;
+          color: #05e8fe;
+          font-size: 32px;
+          line-height: 78px;
+          text-align: center;
+          letter-spacing: 4px;
+          background: url(../images/header-center-bg.png) no-repeat;
+        }
+      }
+    }
+
+    .largeScreen-main {
+      box-sizing: border-box;
+      display: flex;
+      flex: 1;
+      width: 100%;
+      padding: 12px 42px 20px;
+
+      .largeScreen-lf {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 394px;
+        height: 100%;
+        margin-right: 40px;
+        .largeScreen-lf-t,
+        .largeScreen-lf-c,
+        .largeScreen-lf-b {
+          position: relative;
+          box-sizing: border-box;
+          width: 100%;
+          padding-top: 54px;
+        }
+        .largeScreen-lf-t {
+          height: 37%;
+        }
+        .largeScreen-lf-c {
+          height: 30%;
+        }
+        .largeScreen-lf-b {
+          height: 27%;
+        }
+      }
+
+      .largeScreen-ct {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        margin-right: 40px;
+
+        .largeScreen-map {
+          position: relative;
+          box-sizing: border-box;
+          flex: 1;
+          width: 100%;
+          margin-top: 25px;
+        }
+      }
+
+      .largeScreen-rg {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 394px;
+        height: 100%;
+
+        .largeScreen-rg-t,
+        .largeScreen-rg-c,
+        .largeScreen-rg-b {
+          position: relative;
+          box-sizing: border-box;
+          width: 100%;
+          padding-top: 54px;
+        }
+
+        .largeScreen-rg-t {
+          height: 37%;
+        }
+
+        .largeScreen-rg-c {
+          height: 30%;
+        }
+
+        .largeScreen-rg-b {
+          height: 27%;
+        }
+      }
+    }
+  }
+}
