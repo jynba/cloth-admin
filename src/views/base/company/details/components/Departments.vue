@@ -58,8 +58,7 @@ const open = () => {
 };
 
 const editRow = async (row: any) => {
-  const { Result } = await getDepartmentList(row?.id);
-  state.row = Result;
+  state.row = row;
   state.isVisible = true;
 };
 

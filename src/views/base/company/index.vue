@@ -97,7 +97,8 @@ const goTo = (row) => {
   router.push({
     path: '/base/companyDetail',
     query: {
-      row,
+      id: row.id,
+      row: encodeURIComponent(JSON.stringify(row)),
     },
   });
 };

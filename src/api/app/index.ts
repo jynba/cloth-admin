@@ -8,6 +8,8 @@ import type {
   UserListResponse,
   UserCreateParams,
   UserUpdateParams,
+  AdminUserListParams,
+  AdminUserListResponse,
   CompanyListResponse,
   CompanyCreateParams,
   CompanyUpdateParams,
@@ -139,6 +141,33 @@ export const deleteUser = (id: number) =>
     url: `${UserApi.AdminUserDelete}/${id}`,
   });
 
+/**
+ * 获取管理员用户列表（manager 调用）
+ */
+export const getManagerApi = (id?: number | string, params?: AdminUserListParams) =>
+  defHttp.get<AdminUserListResponse>({
+    url: `/admin/users`,
+    params,
+  });
+
+/**
+ * 创建管理员用户
+ */
+export const createManagerApi = (params: any) =>
+  defHttp.post({
+    url: `/admin/users`,
+    params,
+  });
+
+/**
+ * 更新管理员用户
+ */
+export const updateManagerApi = (id: string | number, params: any) =>
+  defHttp.put({
+    url: `/admin/users/${id}`,
+    params,
+  });
+
 // ====================================================
 // 3. 企业 Company
 // ====================================================
@@ -226,12 +255,12 @@ export const getTailorCompanyList = () =>
 // ====================================================
 
 enum DepartmentApi {
-  DepartmentList = `/departments`,
-  DepartmentCreate = `/departments`,
-  DepartmentByCompany = `/departments/company`,
-  DepartmentDetail = `/departments`,
-  DepartmentUpdate = `/departments`,
-  DepartmentDelete = `/departments`,
+  DepartmentList = `/admin/departments`,
+  DepartmentCreate = `/admin/departments`,
+  DepartmentByCompany = `/admin/departments/company`,
+  DepartmentDetail = `/admin/departments`,
+  DepartmentUpdate = `/admin/departments`,
+  DepartmentDelete = `/admin/departments`,
 }
 
 /**
@@ -242,7 +271,7 @@ export const getDepartmentList = (id?: number, params?: any) =>
     ? defHttp.get({ url: `${DepartmentApi.DepartmentDetail}/${id}` }).then((res: any) => ({ Result: res }))
     : defHttp
         .get<DepartmentListResponse>({ url: DepartmentApi.DepartmentList, params })
-        .then((res: any) => ({ Result: res?.data ?? res?.Result ?? [], Count: res?.total ?? res?.Count ?? 0 }));
+        .then((res: any) => ({ Result: res ?? [], Count: res?.total ?? res?.Count ?? res?.length }));
 
 /**
  * 创建部门
@@ -292,17 +321,18 @@ export const deleteDepartment = (id: number) =>
 // ====================================================
 
 enum CustomerApi {
-  CustomerByCompany = `/customers/company`,
-  CustomerByDepartment = `/customers/department`,
-  CustomerPersonalCreate = `/customers/personal`,
+  CustomerByCompany = `/admin/customers/company`,
+  CustomerByDepartment = `/admin/customers/department`,
+  CustomerPersonalCreate = `/admin/customers/personal`,
 }
 
 /**
  * 获取企业客户
  */
-export const getCustomerByCompany = (companyId: number) =>
+export const getCustomerByCompany = (companyId: number, params?: any) =>
   defHttp.get<CustomerListResponse>({
     url: `${CustomerApi.CustomerByCompany}/${companyId}`,
+    params,
   });
 
 /**
@@ -439,11 +469,11 @@ export const exportOrders = (params: OrderExportParams) =>
 // ====================================================
 
 enum TemplateApi {
-  TemplateList = `/templates`,
-  TemplateCreate = `/templates`,
-  TemplateDetail = `/templates`,
-  TemplateUpdate = `/templates`,
-  TemplateDelete = `/templates`,
+  TemplateList = `/admin/templates`,
+  TemplateCreate = `/admin/templates`,
+  TemplateDetail = `/admin/templates`,
+  TemplateUpdate = `/admin/templates`,
+  TemplateDelete = `/admin/templates`,
 }
 
 /**
@@ -528,13 +558,13 @@ export const getQRCodeStats = (id: number) =>
 // ====================================================
 
 enum TailorApi {
-  TailorList = `/tailors`,
-  TailorCreate = `/tailors`,
-  TailorDetail = `/tailors`,
-  TailorUpdate = `/tailors`,
-  TailorDelete = `/tailors`,
-  TailorProfile = `/profile`,
-  TailorPerformance = `/performance`,
+  TailorList = `/admin/tailors`,
+  TailorCreate = `/admin/tailors`,
+  TailorDetail = `/admin/tailors`,
+  TailorUpdate = `/admin/tailors`,
+  TailorDelete = `/admin/tailors`,
+  TailorProfile = `/admin/profile`,
+  TailorPerformance = `/admin/performance`,
 }
 
 /**

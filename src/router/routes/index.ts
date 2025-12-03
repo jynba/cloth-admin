@@ -44,6 +44,7 @@ export const largeScreen = {
 
 // 业务路由
 export const asyncRoutes = sortRouter([...routeModuleList]);
+console.log(asyncRoutes, 'asyncRoutes');
 
 // 浏览器中可导航到的路由
 export const basicRoutes = [

@@ -66,6 +66,47 @@ export interface User {
   updated_at?: string;
 }
 
+// 管理员用户
+/**
+ * @deprecated AdminUser 类型已废弃，列表展示请使用 User 类型
+ */
+export interface AdminUser {
+  id: string;
+  username: string;
+  status: number;
+  roles: Array<{
+    id: string;
+    name: string;
+  }>;
+  node: {
+    id: string;
+    name: string;
+    node_type: 'Root' | 'Company' | 'Agent' | 'Shop' | 'Site';
+  };
+  remark?: string;
+  contact?: string;
+  phone?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+/**
+ * @deprecated AdminUserListParams 已废弃
+ */
+export interface AdminUserListParams {
+  limit?: number;
+  skip?: number;
+  where?: Record<string, any>;
+}
+
+/**
+ * @deprecated AdminUserListResponse 已废弃
+ */
+export interface AdminUserListResponse {
+  Result: AdminUser[];
+  Count: number;
+}
+
 export interface UserListParams {
   page?: number;
   limit?: number;
@@ -277,9 +318,9 @@ export interface MeasureTemplate {
   id: number;
   name: string;
   type: 1 | 2; // 1: 个人, 2: 企业
-  category?: string;
-  specifications?: string[];
-  default_data?: MeasurementData;
+  category?: number; // 1-上衣, 2-裤装, 3-裙装
+
+  default_data?: Record<string, any>;
   created_at?: string;
   updated_at?: string;
 }
@@ -292,17 +333,15 @@ export interface TemplateListResponse {
 export interface TemplateCreateParams {
   name: string;
   type: 1 | 2;
-  category?: string;
-  specifications?: string[];
-  default_data?: MeasurementData;
+  category?: number; // 1-上衣, 2-裤装, 3-裙装
+  default_data?: Record<string, any>; // 个人: 包含 style_config
 }
 
 export interface TemplateUpdateParams {
   name?: string;
   type?: 1 | 2;
-  category?: string;
-  specifications?: string[];
-  default_data?: MeasurementData;
+  category?: number; // 1-上衣, 2-裤装, 3-裙装
+  default_data?: Record<string, any>; // 个人: 包含 style_config
 }
 
 // ====================================================

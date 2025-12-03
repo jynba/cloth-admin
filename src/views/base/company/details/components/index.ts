@@ -1,2 +1,3 @@
 import Departments from './Departments.vue';
-export { Departments };
+import Admins from './Admins.vue';
+export { Departments, Admins };

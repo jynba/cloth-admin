@@ -1,12 +1,13 @@
 import type { AppRouteModule } from '@/router/types';
 import { LAYOUT } from '@/router/constant';
+import { markRaw } from 'vue';
 import UilLink from '~icons/uil/link';
 
 const management: AppRouteModule = {
   path: '/base',
   name: 'base',
   component: LAYOUT,
-  redirect: 'base/company',
+  redirect: '/base/company',
   meta: {
     orderNo: 10,
     title: '组织架构',

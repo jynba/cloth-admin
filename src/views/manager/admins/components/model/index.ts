@@ -1,30 +1,27 @@
 import { phoneRule } from '@/utils/pattern';
 import type { FormType } from '../../types';
-import { managerEnum } from '@/enums';
 
 export const rules = {
-  username: [{ required: true, message: '管理员账号不能为空', trigger: 'change' }],
-  password: [{ required: true, message: '密码不能为空', trigger: 'change' }],
+  username: [{ required: true, message: '账号不能为空', trigger: 'change' }],
+  password: [{ required: true, message: '密码不能为空', trigger: 'change' }], // 新增时必填；编辑时在组件中动态置为非必填
   phone: [phoneRule(false)],
-  node_type: [{ required: true, message: '账号类型不能为空', trigger: 'blur' }],
-  role_ids: [{ required: true, message: '权限不能为空', trigger: 'change' }],
-  node_id: [{ required: true, message: '组织不能为空', trigger: 'change' }],
+  role: [{ required: true, message: '角色不能为空', trigger: 'change' }],
+  status: [{ required: true, message: '状态不能为空', trigger: 'change' }],
 };
 
 export function buildForm(form?: FormType) {
-  const role_ids = form?.roles?.map((item) => item.id);
   return {
+    id: form?.id,
     username: form?.username,
-    password: form?.password,
-    status: form?.status ?? managerEnum.NORMAL,
-    node_id: form?.node_id,
-    name: form?.node?.name,
-    node_type: form?.node?.node_type,
-    role_ids,
-  };
+    password: '',
+    phone: form?.phone,
+    real_name: form?.real_name,
+    role: form?.role ?? 1,
+    status: form?.status ?? 1,
+  } as FormType;
 }
 
-// 修改密码
+// 修改密码（备用）
 export const rulesPassword = {
   newPassword: [{ required: true, message: '新密码不能为空', trigger: 'blur' }],
   confirmPassword: [{ required: true, message: '确认密码不能为空', trigger: 'blur' }],
