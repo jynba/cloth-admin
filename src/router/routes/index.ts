@@ -32,16 +32,6 @@ export const LoginRoute = {
     title: '登录',
   },
 };
-
-export const largeScreen = {
-  path: '/largeScreen',
-  name: 'LargeScreen',
-  component: () => import('@/views/largeScreen/index.vue'),
-  meta: {
-    title: '大屏',
-  },
-};
-
 // 业务路由
 export const asyncRoutes = sortRouter([...routeModuleList]);
 console.log(asyncRoutes, 'asyncRoutes');

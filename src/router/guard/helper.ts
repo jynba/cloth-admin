@@ -10,7 +10,7 @@ import { sleep } from '@/utils/tools';
 import { error } from '@/hooks/elementPlus/useMessage';
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
-const whiteList = [LOGIN_PATH, '/largeScreen'];
+const whiteList = [LOGIN_PATH];
 
 const userStore = useUserStoreWithOut();
 const permissionStore = usePermissionStoreWithOut();
